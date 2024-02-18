@@ -1,5 +1,13 @@
 package edu.uwp.cs.csci380.project.PA.simpleaccess_V1;
 
+/**
+ * SSHConnection Class.
+ * <p>
+ *     This class creates a JSch object to create an SSH session and port forward to a remote host.
+ *     Getters and Setters are available to change the host, username/password, and the ports to be used.
+ * </p>
+ */
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;

@@ -1,5 +1,12 @@
 package edu.uwp.cs.csci380.project.PA.simpleaccess_V1;
 
+/**
+ * AppMain class. This class is the main driver for SimpleAccess_V1
+ *
+ * @author Tyler Villalobos
+ * @bugs None
+ */
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -15,12 +22,14 @@ public class AppMain {
             sshConnection.connect();
             System.out.println("Establishing SSH Connection...done.");
             System.out.println("Assigned port: " + sshConnection.getLocalPort());
+            System.out.println("Query from Mysql Database!");
             // Define MySQL database URL
             String dbUrl = "jdbc:mysql://localhost:4321/QACS_db?characterEncoding=utf8";
+            System.out.println("Connection URL: " + dbUrl);
             // Initialize MySQL query executor
-            MySqlSimpleQuery queryExecutor = new MySqlSimpleQuery(dbUrl, "villalot", "uZ=8tzTg");
+            MySqlSimpleQuery simpleQuery = new MySqlSimpleQuery(dbUrl, "villalot", "uZ=8tzTg");
             // Execute MySQL query
-            queryExecutor.executeQuery();
+            simpleQuery.executeQuery();
         } catch (JSchException | SQLException e) {
         } finally {
             // Disconnect SSH session

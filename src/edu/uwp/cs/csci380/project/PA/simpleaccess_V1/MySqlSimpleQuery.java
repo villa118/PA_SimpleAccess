@@ -1,4 +1,13 @@
 package edu.uwp.cs.csci380.project.PA.simpleaccess_V1;
+
+/**
+ * MySimpleQuery Class
+ * <p>
+ *     This class creates a connection to a specified database and executes a query.
+ *     Getters and Setters are available to change who is accessing the database.
+ * </p>
+ */
+
 import java.sql.*;
 public class MySqlSimpleQuery {
     private String dbUrl;
