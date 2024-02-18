@@ -5,25 +5,54 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class SshConnection {
-    private String host;
-    private String user;
-    private String password;
-    private int port;
+    private String sshHost;
+    private String sshUser;
+    private String sshPassword;
+    private int sshPort;
+    private int localPort;
+    private int remotePort;
     private Session session;
 
-    SshConnection(String host, String user, String password, int port) {
-        this.host = host;
-        this.user = user;
-        this.password = password;
-        this.port = port;
+    /**
+     * Constructor for SShConnection object
+     * @param sshHost String for the sshHost name
+     * @param sshUser String for username accessing the SSH
+     * @param sshPassword String for the user's password
+     * @param sshPort int for the SSH port
+     * @param localPort int for local port
+     * @param remotePort int for remote port
+     */
+
+    public SshConnection(String sshHost, String sshUser, String sshPassword, int sshPort, int localPort, int remotePort) {
+        this.sshHost = sshHost;
+        this.sshUser = sshUser;
+        this.sshPassword = sshPassword;
+        this.sshPort = sshPort;
+        this.localPort = localPort;
+        this.remotePort = remotePort;
     }
+
+    /**
+     * This method creates a JSch object and creates an SSH session and port forwards to the desired host
+     * @throws JSchException
+     */
 
     public void connect() throws JSchException {
         JSch jsch = new JSch();
-        session = jsch.getSession(user, host, port);
-        session.setPassword(password);
+        session = jsch.getSession(sshUser, sshHost, sshPort);
+        session.setPassword(sshPassword);
+        session.setConfig("StrictHostKeyChecking", "no");
         session.connect();
+        session.setPortForwardingL(localPort, sshHost, remotePort);
     }
+
+    /**
+     * This method sets up port forwarding to the desired host
+     * @param localPort
+     * @param remoteHost
+     * @param remotePort
+     * @throws JSchException
+     */
 
     public void setupPortForwarding(int localPort, String remoteHost, int remotePort) throws JSchException {
             session.setPortForwardingL(localPort, remoteHost, remotePort);
@@ -35,14 +64,51 @@ public class SshConnection {
         }
     }
 
-    public static void main(String[] args){
-        SshConnection connection = new SshConnection("labs.cs.uwp.edu", "villalot","1qaz@WSX3edc$RFV", 4321);
-        try {
-            connection.connect();
-            connection.setupPortForwarding(0, "jdbc:mysql://localhost:4321/QACS_db?characterEncoding=utf8", 4321);
-        } catch (JSchException e) {
-            throw new RuntimeException(e);
-        }
+    public String getSshHost() {
+        return sshHost;
     }
 
+    public void setSshHost(String sshHost) {
+        this.sshHost = sshHost;
+    }
+
+    public String getSshUser() {
+        return sshUser;
+    }
+
+    public void setSshUser(String sshUser) {
+        this.sshUser = sshUser;
+    }
+
+    public String getSshPassword() {
+        return sshPassword;
+    }
+
+    public void setSshPassword(String sshPassword) {
+        this.sshPassword = sshPassword;
+    }
+
+    public int getSshPort() {
+        return sshPort;
+    }
+
+    public void setSshPort(int sshPort) {
+        this.sshPort = sshPort;
+    }
+
+    public int getLocalPort() {
+        return localPort;
+    }
+
+    public void setLocalPort(int localPort) {
+        this.localPort = localPort;
+    }
+
+    public int getRemotePort() {
+        return remotePort;
+    }
+
+    public void setRemotePort(int remotePort) {
+        this.remotePort = remotePort;
+    }
 }
